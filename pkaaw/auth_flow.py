@@ -38,7 +38,8 @@ def get_request_tokens(consumer_key=keys['consumer_key'],
 
 def make_auth_url(request_tokens):
     """builds the url where a user can authorize the application"""
-    auth_url = constants.authorization_url + '?oauth_token=' + request_tokens['oauth_token']
+    auth_url = constants.authorization_url
+    auth_url = auth_url + '?oauth_token=' + request_tokens['oauth_token']
     return auth_url
 
 
