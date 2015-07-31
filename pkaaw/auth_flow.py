@@ -8,7 +8,7 @@ import constants
 import webbrowser
 
 # default method for loading key and secret
-with open('keys.yml', 'r') as f:
+with open('../keys.yml', 'r') as f:
     keys = yaml.load(f)
 
 

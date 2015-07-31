@@ -2,7 +2,6 @@
 
 from pkaaw.auth_flow import get_request_tokens
 from .helper import pkaaw_test
-import requests
 
 class request_tokensTest(pkaaw_test):
     def setUp(self):
