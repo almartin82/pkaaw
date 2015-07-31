@@ -45,7 +45,7 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=['requests-oauthlib', 'requests', 'yaml'],
+    install_requires=['requests-oauthlib', 'requests', 'PyYAML'],
 
     # Entry points for command line integration
     entry_points="",
