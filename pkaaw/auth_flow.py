@@ -22,7 +22,8 @@ def get_request_tokens(consumer_key=APP_KEYS['consumer_key'],
     # requests time out.  request token from service provider
     oauth = requests_oauthlib.OAuth1(client_key=consumer_key,
                                      client_secret=consumer_secret)
-    khan_resp = requests.post(url=pkaaw.constants.REQUEST_TOKEN_URL, auth=oauth)
+    khan_resp = requests.post(url=pkaaw.constants.REQUEST_TOKEN_URL,
+                              auth=oauth)
 
     # http://stackoverflow.com/a/27458812
     # service provider issues request tokens
