@@ -2,7 +2,6 @@
 from __future__ import print_function, unicode_literals
 import requests_oauthlib
 import requests
-import urlparse
 import webbrowser
 import yaml
 # package specific
@@ -36,13 +35,13 @@ def fetch_access_token(khan_auth):
     """takes request token and exchanges for access token"""
     keys = khan_auth.auth.client
     oauth = requests_oauthlib.OAuth1(
-        client_key = keys.client_key,
-        resource_owner_key = keys.resource_owner_key,
-        resource_owner_secret = keys.resource_owner_secret
+        client_key=keys.client_key,
+        resource_owner_key=keys.resource_owner_key,
+        resource_owner_secret=keys.resource_owner_secret
     )
     r = requests.get(
-        url = pkaaw.constants.AUTHORIZATION_URL,
-        auth = oauth,
+        url=pkaaw.constants.AUTHORIZATION_URL,
+        auth=oauth,
         params={
             'oauth_token': keys.resource_owner_secret
         }
