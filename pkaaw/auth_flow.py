@@ -3,6 +3,7 @@ from __future__ import print_function, unicode_literals
 import requests_oauthlib
 import requests
 import webbrowser
+import sys
 import yaml
 # package specific
 import pkaaw.constants
@@ -26,7 +27,10 @@ def console_auth(khan_auth):
     """for capturing auth credentials in the python console"""
     url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
     webbrowser.open(url, new=0, autoraise=True)
-    redirect_response = raw_input('Paste the full redirect URL here.')
+    if sys.version_info[0] < 3:
+        redirect_response = raw_input('Paste the full redirect URL here.')
+    elif sys.version_info[0] >= 3:
+        redirect_response = input('Paste the full redirect URL here.')
     khan_auth.parse_authorization_response(redirect_response)
     return khan_auth
 
