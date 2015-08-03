@@ -16,45 +16,35 @@ with open('../keys.yml', 'r') as f:
 
 def get_request_tokens(consumer_key=APP_KEYS['consumer_key'],
                        consumer_secret=APP_KEYS['consumer_secret']):
-    """starts the oauth dance.  returns an authorization url
-    where the user can grant access."""
-
-    # requests time out.  request token from service provider
-    oauth = requests_oauthlib.OAuth1(client_key=consumer_key,
-                                     client_secret=consumer_secret)
-    khan_resp = requests.post(url=pkaaw.constants.REQUEST_TOKEN_URL,
-                              auth=oauth)
-
-    # http://stackoverflow.com/a/27458812
-    # service provider issues request tokens
-    creds = urlparse.parse_qs(khan_resp.content)
-
-    # parse and return the request tokens
-    request_tokens = {
-        'oauth_token': creds.get('oauth_token')[0],
-        'oauth_token_secret': creds.get('oauth_token_secret')[0]
-    }
-
-    return request_tokens
+    """uses request_oauthlib to start the oauth dance."""
+    khan_auth = requests_oauthlib.OAuth1Session(client_key=consumer_key,
+                                                client_secret=consumer_secret)
+    khan_auth.fetch_request_token(pkaaw.constants.REQUEST_TOKEN_URL)
+    return khan_auth
 
 
-def make_auth_url(request_tokens):
-    """builds the url where a user can authorize the application"""
-    auth_url = pkaaw.constants.AUTHORIZATION_URL
-    auth_url = auth_url + '?oauth_token=' + request_tokens['oauth_token']
-    return auth_url
-
-
-def manual_user_to_provider(request_tokens):
-    """for manual flow, raises a browser for the user to login"""
-    url = make_auth_url(request_tokens)
+def console_auth(khan_auth):
+    """for capturing auth credentials in the python console"""
+    url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
     webbrowser.open(url, new=0, autoraise=True)
+    redirect_response = raw_input('Paste the full redirect URL here.')
+    khan_auth.parse_authorization_response(redirect_response)
+    return khan_auth
 
 
-def manual_auth_flow(consumer_key=APP_KEYS['consumer_key'],
-                     consumer_secret=APP_KEYS['consumer_secret']):
-    """wrapper around the oauth functions, for CLI/desktop use."""
-
-    req_tokens = get_request_tokens(consumer_key, consumer_secret)
-    manual_user_to_provider(req_tokens)
-    return None
+def fetch_access_token(khan_auth):
+    """takes request token and exchanges for access token"""
+    keys = khan_auth.auth.client
+    oauth = requests_oauthlib.OAuth1(
+        client_key = keys.client_key,
+        resource_owner_key = keys.resource_owner_key,
+        resource_owner_secret = keys.resource_owner_secret
+    )
+    r = requests.get(
+        url = pkaaw.constants.AUTHORIZATION_URL,
+        auth = oauth,
+        params={
+            'oauth_token': keys.resource_owner_secret
+        }
+    )
+    return r
