@@ -2,6 +2,14 @@
 import unittest
 
 
+class ObjectTest(unittest.TestCase):
+    def configure(self):
+        self.APP_KEYS = {
+            'self.consumer_key': 'CzQhjzHT3a5p5sAM',
+            'consumer_secret': 'Tbhk683HDPYDM9ea'
+        }
+
+
 class StudentTest(unittest.TestCase):
     def configure(self):
         self.consumer_key = 'CzQhjzHT3a5p5sAM'
@@ -16,3 +24,4 @@ class CoachTest(unittest.TestCase):
         self.consumer_secret = 'Tbhk683HDPYDM9ea'
         self.oauth_token = 't5449532725919744'
         self.oauth_token_secret = 'cLUHZj5CYrP7Uvcu'
+
