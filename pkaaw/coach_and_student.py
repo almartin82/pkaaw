@@ -4,11 +4,7 @@ import requests
 import requests_oauthlib
 import pandas as pd
 import urllib
-import os
 import yaml
-from six.moves import input
-# package specific
-import pkaaw.constants
 
 
 class Coach(object):
@@ -71,7 +67,7 @@ class Student(object):
     khan_user_url = 'http://www.khanacademy.org/api/v1/user'
     khan_exercises_url = 'http://www.khanacademy.org/api/v1/user/exercises'
     khan_exercise_states_url = ('http://www.khanacademy.org/api/v1/user/' +
-        'exercises/progress_changes')
+                                'exercises/progress_changes')
     khan_badges_url = 'http://www.khanacademy.org/api/v1/badges'
     khan_exercise_metadata_url = 'http://www.khanacademy.org/api/v1/exercises'
 
@@ -140,12 +136,12 @@ class Student(object):
         stu_badge_url = '%s?%s' % (Student.khan_badges_url, self.user_link)
         r = self.make_request(stu_badge_url)
         if r.status_code == requests.codes.ok:
-            #returns a list of badges
+            # returns a list of badges
             badge_list = r.json()
             stu_list = []
             stu_list_detail = []
             for badge in badge_list:
-                #make a dict of each badge
+                # make a dict of each badge
                 dict([(str(k), v) for k, v in badge.items()])
                 int_dict = {
                     'student': self.id,
@@ -153,12 +149,12 @@ class Student(object):
                     'owned': badge['is_owned'],
                     'count': 0
                 }
-                #API only returns user badges if badge is owned
+                # API only returns user badges if badge is owned
                 if badge['is_owned']:
                     try:
                         int_dict['count'] = len(badge['user_badges'])
-                        #iterate over user badges and store date & context
-                        #(badges can be earned multiple times)
+                        # iterate over user badges and store date & context
+                        # (badges can be earned multiple times)
                         for detail in badge['user_badges']:
                             dict([(str(k), v) for k, v in detail.items()])
                             int_detail_dict = {
@@ -171,7 +167,7 @@ class Student(object):
                     except Exception, e:
                         print e
                         int_dict['count'] = 1
-                    #append to student dict
+                    # append to student dict
                     stu_list.append(int_dict)
 
         return stu_list
@@ -211,9 +207,9 @@ class Student(object):
                 stu_list.append(int_dict)
 
             stu_list = [
-                ex_dict
-                for ex_dict in stu_list
-                    if ex_dict['exercise'] in self.exers
+                stu_dict
+                for stu_dict in stu_list
+                if stu_dict['exercise'] in self.exers
             ]
 
         return stu_list
@@ -241,7 +237,7 @@ class Student(object):
             stu_list = [
                 item_dict
                 for item_dict in stu_list
-                    if item_dict['exercise'] in self.exers
+                if item_dict['exercise'] in self.exers
             ]
 
         return stu_list
