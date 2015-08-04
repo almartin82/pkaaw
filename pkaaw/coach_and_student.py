@@ -5,7 +5,6 @@ import requests_oauthlib
 import pandas as pd
 import urllib
 import yaml
-import six.moves
 
 
 class Coach(object):
@@ -165,8 +164,7 @@ class Student(object):
                                 'context': str(detail['target_context_name'])
                             }
                             stu_list_detail.append(int_detail_dict)
-                    except Exception, e:
-                        six.print_(e)
+                    except Exception:
                         int_dict['count'] = 1
                     # append to student dict
                     stu_list.append(int_dict)
