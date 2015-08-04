@@ -1,4 +1,5 @@
 """test helper methods"""
+
 import unittest
 
 
@@ -22,6 +23,6 @@ class CoachTest(unittest.TestCase):
     def configure(self):
         self.consumer_key = 'CzQhjzHT3a5p5sAM'
         self.consumer_secret = 'Tbhk683HDPYDM9ea'
-        self.oauth_token = 't5449532725919744'
-        self.oauth_token_secret = 'cLUHZj5CYrP7Uvcu'
-
+        self.oauth_token = 't4792281044484096'
+        self.oauth_token_secret = 'QdGSpVY5BazQn5VF'
+        

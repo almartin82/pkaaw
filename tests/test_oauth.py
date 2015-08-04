@@ -9,7 +9,6 @@ class StudentRequestTokensTest(StudentTest):
         self.configure()
 
     def test_get_request_tokens(self):
-    	khan_auth = ConsoleAuth()
         request_tokens = get_request_tokens(self.consumer_key,
                                             self.consumer_secret)
         self.assertEqual(request_tokens.auth.client.client_key,
