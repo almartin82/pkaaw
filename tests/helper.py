@@ -25,4 +25,3 @@ class CoachTest(unittest.TestCase):
         self.consumer_secret = 'Tbhk683HDPYDM9ea'
         self.oauth_token = 't4792281044484096'
         self.oauth_token_secret = 'QdGSpVY5BazQn5VF'
-        

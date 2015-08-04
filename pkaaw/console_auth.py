@@ -16,8 +16,6 @@ import pkaaw.constants
 
 
 class ConsoleAuth(object):
-
-
     def __init__(self, APP_KEYS):
         self.APP_KEYS = APP_KEYS
 
@@ -36,7 +34,6 @@ class ConsoleAuth(object):
         khan_auth.fetch_request_token(pkaaw.constants.REQUEST_TOKEN_URL)
         return khan_auth
 
-
     def console_auth(self, khan_auth):
         """for capturing auth credentials in the python console"""
         url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
@@ -45,7 +42,6 @@ class ConsoleAuth(object):
         redirect_response = input('Paste the full redirect URL here: ')
         khan_auth.parse_authorization_response(redirect_response)
         return khan_auth
-
 
     def fetch_access_tokens(self, khan_auth):
         """takes request token and exchanges for access token"""

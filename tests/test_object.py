@@ -25,7 +25,8 @@ class ConsoleAuthTest(ObjectTest):
              'trust_env', 'headers', 'cert', 'params', '_client', 'verify',
              'proxies', 'adapters', 'max_redirects']
         )
-        
+
+
 class ObjectTest(ObjectTest):
     def setUp(self):
         self.configure()
@@ -39,5 +40,5 @@ class ObjectTest(ObjectTest):
         details = student.get_details()
 
         self.assertEqual(len(roster), 1)
-        self.assertEqual(len(exers), 1057)       
+        self.assertEqual(len(exers), 1057)
         self.assertEqual(details['username'], 'pkaawstudent')
