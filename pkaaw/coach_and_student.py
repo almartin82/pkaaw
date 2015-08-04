@@ -124,7 +124,7 @@ class Student(object):
             identity_email = [
                 str(x)
                 for x in resp_dict['auth_emails']
-                    if x.endswith("@teamstudents.org")
+                if x.endswith("@teamstudents.org")
             ]
 
             inner_dict['identity_email'] = ', '.join(map(str, identity_email))
