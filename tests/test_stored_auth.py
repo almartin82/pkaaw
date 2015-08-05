@@ -1,6 +1,7 @@
 """tests for stored_auth class."""
 
-import pkaaw.stored_auth, pkaaw.constants
+import pkaaw.stored_auth
+import pkaaw.constants
 from helper import CoachTest
 
 
