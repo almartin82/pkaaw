@@ -1,4 +1,4 @@
 #obtain these keys at: https://www.khanacademy.org/api-apps/register
 #read more at: https://github.com/Khan/khan-api/wiki/Khan-Academy-API-Authentication
 consumer_key: 'your_consumer_key'
-consumer_secret: 'your_consumer_secret'
+consumer_secret: 'your_consume_secret'

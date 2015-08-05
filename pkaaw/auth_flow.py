@@ -2,20 +2,14 @@
 from __future__ import print_function, unicode_literals
 import requests_oauthlib
 import requests
+import urlparse
 import webbrowser
 from six.moves import input
-import yaml
 # package specific
 import pkaaw.constants
 
 
-# default method for loading key and secret
-with open('../keys.yml', 'r') as f:
-    APP_KEYS = yaml.load(f)
-
-
-def get_request_tokens(consumer_key=APP_KEYS['consumer_key'],
-                       consumer_secret=APP_KEYS['consumer_secret']):
+def get_request_tokens(consumer_key, consumer_secret):
     """uses request_oauthlib to start the oauth dance."""
     khan_auth = requests_oauthlib.OAuth1Session(client_key=consumer_key,
                                                 client_secret=consumer_secret)
@@ -28,7 +22,7 @@ def console_auth(khan_auth):
     url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
     webbrowser.open(url, new=0, autoraise=True)
 
-    redirect_response = input('Paste the full redirect URL here.')
+    redirect_response = input('Paste the full redirect URL here: ')
 
     khan_auth.parse_authorization_response(redirect_response)
     return khan_auth
@@ -39,14 +33,19 @@ def fetch_access_token(khan_auth):
     keys = khan_auth.auth.client
     oauth = requests_oauthlib.OAuth1(
         client_key=keys.client_key,
+        client_secret=keys.client_secret,
         resource_owner_key=keys.resource_owner_key,
         resource_owner_secret=keys.resource_owner_secret
     )
-    r = requests.get(
-        url=pkaaw.constants.AUTHORIZATION_URL,
+
+    r = requests.post(
+        url=pkaaw.constants.ACCESS_TOKEN_URL,
         auth=oauth,
-        params={
-            'oauth_token': keys.resource_owner_secret
-        }
     )
-    return r
+
+    credentials = urlparse.parse_qs(r.content)
+    tokens = {
+        'access_token': credentials.get('oauth_token')[0],
+        'access_token_secret': credentials.get('oauth_token_secret')[0]
+    }
+    return tokens

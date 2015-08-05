@@ -20,20 +20,17 @@ class Coach(object):
 
     def __init__(self, coach, access_token=None, access_token_secret=None):
         self.coach = coach
-        # get stored access tokens
-        oauth_data = __import__(
-            'pkaaw.%s.%s.tokens' % (Coach.OAUTH_DIR, coach),
-            fromlist=['tokens']
-        )
+        # get stored access tokens if not explicitly provided
+        if access_token is None or access_token_secret is None:
+            self.oauth_data = __import__(
+                'pkaaw.%s.%s.tokens' % (Coach.OAUTH_DIR, coach),
+                fromlist=['tokens']
+            )
+            self.final_token = self.oauth_data.FINAL_OAUTH_TOKEN
+            self.final_token_secret = self.oauth_data.FINAL_OAUTH_TOKEN_SECRET
 
-        if access_token is None:
-            self.final_token = oauth_data.FINAL_OAUTH_TOKEN
         else:
             self.final_token = access_token
-
-        if access_token_secret is None:
-            self.final_token_secret = oauth_data.FINAL_OAUTH_TOKEN_SECRET
-        else:
             self.final_token_secret = access_token_secret
 
         self.oauth = requests_oauthlib.OAuth1(
@@ -41,8 +38,7 @@ class Coach(object):
             client_secret=Coach.CONSUMER_SECRET,
             resource_owner_key=self.final_token,
             resource_owner_secret=self.final_token_secret,
-            signature_type='auth_header',
-            signature_method='PLAINTEXT'
+            signature_type='auth_header'
         )
 
     def get_oauth(self):
@@ -53,12 +49,22 @@ class Coach(object):
         r = requests.get(url=target_url, auth=self.oauth)
         return r
 
+    def get_coach_details(self):
+        r = self.make_request(Coach.khan_user_url)
+
+        if r.status_code == requests.codes.ok:
+            return r.json
+        else:
+            print(r.reason)
+
     def get_students(self):
         """Returns list of the coach's students' user ids"""
         r = self.make_request(Coach.khan_students_url)
-        students = [student['user_id'] for student in r.json()]
 
-        return students
+        if r.status_code == requests.codes.ok:
+            return[student['user_id'] for student in r.json()]
+        else:
+            print(r.reason)
 
 
 class Student(object):
