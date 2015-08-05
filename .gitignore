@@ -58,6 +58,7 @@ target/
 
 # Pycharm
 *.idea
+*.py___jb_bak___
 
 # project
 my_keys.yml
