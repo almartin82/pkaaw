@@ -5,7 +5,8 @@ import requests
 
 
 class StoredAuth(object):
-    def __init__(self, consumer_key, consumer_secret, access_token, access_token_secret):
+    def __init__(self, consumer_key, consumer_secret,
+                 access_token, access_token_secret):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.access_token = access_token
@@ -24,7 +25,7 @@ class StoredAuth(object):
     def get_oauth(self):
         return self.oauth
 
-    def make_request(self, target_url, parse_response = True):
+    def make_request(self, target_url, parse_response=True):
         """makes an authenticated request to the target url"""
         out = requests.get(url=target_url, auth=self.oauth)
         if parse_response:
