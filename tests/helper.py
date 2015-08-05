@@ -8,6 +8,7 @@ class ObjectTest(unittest.TestCase):
         self.consumer_key = 'CzQhjzHT3a5p5sAM'
         self.consumer_secret = 'Tbhk683HDPYDM9ea'
 
+
 class StudentTest(unittest.TestCase):
     def configure(self):
         self.consumer_key = 'CzQhjzHT3a5p5sAM'

@@ -5,7 +5,6 @@ import requests
 import urlparse
 import webbrowser
 from six.moves import input
-import yaml
 # package specific
 import pkaaw.constants
 
