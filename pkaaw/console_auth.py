@@ -3,7 +3,6 @@ from __future__ import print_function, unicode_literals
 import requests_oauthlib
 import requests
 # package specific
-import pkaaw.constants
 import pkaaw.auth_flow
 
 
