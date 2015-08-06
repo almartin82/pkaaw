@@ -21,7 +21,7 @@ class Coach(object):
 
     def get_students(self):
         """Returns list of the coach's students' user ids"""
-        resp = self.get_students_raw(pkaaw.constants.STUDENTS_URL)
+        resp = self.get_students_raw()
 
         return [student['user_id'] for student in resp]
 
