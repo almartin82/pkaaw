@@ -11,6 +11,7 @@ class Coach(object):
     def __init__(self, StoredAuth):
         if not hasattr(StoredAuth, 'oauth'):
             raise pkaaw.errors.ActiveSessionRequired
+
         self.oauth = StoredAuth.oauth
         self.get_oauth = StoredAuth.get_oauth
         self.make_request = StoredAuth.make_request
@@ -33,6 +34,9 @@ class Coach(object):
 class Student(object):
 
     def __init__(self, StoredAuth, user_id):
+        if not hasattr(StoredAuth, 'oauth'):
+            raise pkaaw.errors.ActiveSessionRequired
+
         self.oauth = StoredAuth.oauth
         self.make_request = StoredAuth.make_request
         self.id = user_id
