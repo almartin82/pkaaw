@@ -7,7 +7,7 @@ class PKAAWException(Exception):
         self.message = message
 
     def __str__(self):
-        """Rerturn the message of the error"""
+        """Rerturn the message of the error."""
         return self.message
 
 
@@ -15,7 +15,7 @@ class ActiveSessionRequired(PKAAWException):
     """Indicates that an authorized session is required.
 
     This exception is raised when a Coach or Student is created without
-    an authorized session being initialized first
+    an authorized session being initialized first.
 
     """
 
