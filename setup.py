@@ -7,7 +7,6 @@ https://packaging.python.org/en/latest/distributing.html
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 # To use a consistent encoding
-from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -16,21 +15,24 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name='pkaaw',
 
-    version='0.0.1',
+    version='0.0.2',
 
     description='Python Khan Academy API Wrapper',
-    long_description='Python wrapper for the Khan Academy API, using most current auth flow.',
+    long_description='Python wrapper for the Khan Academy API, '
+                     'using v2 auth flow.  Has classes for '
+                     'command line auth (ConsoleAuth) and auth '
+                     'from stored keys (StoredAuth).',
 
     url='https://github.com/almartin82/pkaaw',
 
-    author='Andrew Martin',
-    author_email='almartin@gmail.com',
+    author='Andrew Martin, James Kim',
+    author_email='almartin@gmail.com, jamesykim10@gmail.com',
 
     license='MIT',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 2 - Pre-Alpha',
 
         'Intended Audience :: Developers',
         'Intended Audience :: Education',

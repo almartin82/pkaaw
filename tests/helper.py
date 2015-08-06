@@ -5,10 +5,8 @@ import unittest
 
 class ObjectTest(unittest.TestCase):
     def configure(self):
-        self.APP_KEYS = {
-            'consumer_key': 'CzQhjzHT3a5p5sAM',
-            'consumer_secret': 'Tbhk683HDPYDM9ea'
-        }
+        self.consumer_key = 'CzQhjzHT3a5p5sAM',
+        self.consumer_secret = 'Tbhk683HDPYDM9ea'
 
 
 class StudentTest(unittest.TestCase):
