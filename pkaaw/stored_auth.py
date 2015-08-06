@@ -28,6 +28,5 @@ class StoredAuth(object):
     def make_request(self, target_url, parse_response=True):
         """makes an authenticated request to the target url"""
         out = requests.get(url=target_url, auth=self.oauth)
-        if parse_response:
-            out = out.json()
+
         return out

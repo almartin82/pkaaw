@@ -1,99 +1,45 @@
 """Coach and Student classes"""
 
 import requests
-import requests_oauthlib
-import pandas as pd
 import urllib
-import yaml
+import pkaaw.constants
+import pkaaw.errors
 
 
 class Coach(object):
 
-    OAUTH_DIR = 'oauth_data'
-    with open('keys.yml', 'r') as f:
-        APP_KEYS = yaml.load(f)
-
-    CONSUMER_KEY = APP_KEYS['consumer_key']
-    CONSUMER_SECRET = APP_KEYS['consumer_secret']
-    khan_students_url = 'http://www.khanacademy.org/api/v1/user/students'
-    khan_user_url = 'http://www.khanacademy.org/api/v1/user'
-
-    def __init__(self, coach, access_token=None, access_token_secret=None):
-        self.coach = coach
-        # get stored access tokens if not explicitly provided
-        if access_token is None or access_token_secret is None:
-            self.oauth_data = __import__(
-                'pkaaw.%s.%s.tokens' % (Coach.OAUTH_DIR, coach),
-                fromlist=['tokens']
-            )
-            self.final_token = self.oauth_data.FINAL_OAUTH_TOKEN
-            self.final_token_secret = self.oauth_data.FINAL_OAUTH_TOKEN_SECRET
-
-        else:
-            self.final_token = access_token
-            self.final_token_secret = access_token_secret
-
-        self.oauth = requests_oauthlib.OAuth1(
-            client_key=Coach.CONSUMER_KEY,
-            client_secret=Coach.CONSUMER_SECRET,
-            resource_owner_key=self.final_token,
-            resource_owner_secret=self.final_token_secret,
-            signature_type='auth_header'
-        )
-
-    def get_oauth(self):
-        return self.oauth
-
-    def make_request(self, target_url):
-        """Returns respons from target_url"""
-        r = requests.get(url=target_url, auth=self.oauth)
-        return r
+    def __init__(self, StoredAuth):
+        if not hasattr(StoredAuth, 'oauth'):
+            raise pkaaw.errors.ActiveSessionRequired
+        self.oauth = StoredAuth.oauth
+        self.get_oauth = StoredAuth.get_oauth
+        self.make_request = StoredAuth.make_request
 
     def get_coach_details(self):
-        r = self.make_request(Coach.khan_user_url)
+        r = self.make_request(pkaaw.constants.USER_URL)
 
-        if r.status_code == requests.codes.ok:
-            return r.json
-        else:
-            print(r.reason)
+        return r.json()
 
     def get_students(self):
         """Returns list of the coach's students' user ids"""
-        r = self.make_request(Coach.khan_students_url)
+        r = self.make_request(pkaaw.constants.STUDENTS_URL)
 
         if r.status_code == requests.codes.ok:
-            return[student['user_id'] for student in r.json()]
+            return [student['user_id'] for student in r.json()]
         else:
             print(r.reason)
 
 
 class Student(object):
 
-    DATA_DIR = 'khan_data'
-    khan_user_url = 'http://www.khanacademy.org/api/v1/user'
-    khan_exercises_url = 'http://www.khanacademy.org/api/v1/user/exercises'
-    khan_exercise_states_url = ('http://www.khanacademy.org/api/v1/user/' +
-                                'exercises/progress_changes')
-    khan_badges_url = 'http://www.khanacademy.org/api/v1/badges'
-    khan_exercise_metadata_url = 'http://www.khanacademy.org/api/v1/exercises'
-
-    def __init__(self, coach, user_id):
-        self.coach = Coach(coach)
+    def __init__(self, StoredAuth, user_id):
+        self.oauth = StoredAuth.oauth
+        self.make_request = StoredAuth.make_request
         self.id = user_id
-        self.meta = pd.read_csv(
-            'pkaaw/%s/topic_metadata.csv' % Student.DATA_DIR
-        )
-        self.exers = self.meta['id'][self.meta['1'] == 'math'].tolist()
         self.user_link = urllib.urlencode({'userId': self.id})
 
-    def make_request(self, target_url):
-        """Returns respons from target_url"""
-        r = requests.get(url=target_url, auth=self.coach.get_oauth())
-
-        return r
-
     def get_details(self):
-        stu_url = '%s?%s' % (Student.khan_user_url, self.user_link)
+        stu_url = '%s?%s' % (pkaaw.constants.USER_URL, self.user_link)
         r = self.make_request(stu_url)
         inner_dict = {}
         # if response is valid, build a dict of key fields
@@ -139,7 +85,7 @@ class Student(object):
 
     def get_student_badges(self):
         """Gets earned status and count for every student/badge."""
-        stu_badge_url = '%s?%s' % (Student.khan_badges_url, self.user_link)
+        stu_badge_url = '%s?%s' % (pkaaw.constants.BADGES_URL, self.user_link)
         r = self.make_request(stu_badge_url)
         if r.status_code == requests.codes.ok:
             # returns a list of badges
@@ -179,7 +125,7 @@ class Student(object):
 
     def get_composite_exercises(self):
         """Gets exercise status for every student/exercise."""
-        stu_exercise_url = '%s?%s' % (Student.khan_exercises_url,
+        stu_exercise_url = '%s?%s' % (pkaaw.constants.EXERCISES_URL,
                                       self.user_link)
         r = self.make_request(stu_exercise_url)
         stu_list = []
@@ -221,7 +167,7 @@ class Student(object):
 
     def get_exercise_states(self):
         """Gets exercise state changes for every student/exercise"""
-        stu_states_url = '%s?%s' % (Student.khan_exercise_states_url,
+        stu_states_url = '%s?%s' % (pkaaw.constants.EXERCISE_STATES_URL,
                                     self.user_link)
         r = self.make_request(stu_states_url)
         stu_list = []
