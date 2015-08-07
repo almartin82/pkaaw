@@ -22,7 +22,7 @@ def console_auth(khan_auth):
     url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
     webbrowser.open(url, new=0, autoraise=True)
 
-    redirect_response = input('Paste the full redirect URL here.')
+    redirect_response = input('Paste the full redirect URL here: ')
 
     khan_auth.parse_authorization_response(redirect_response)
     return khan_auth
