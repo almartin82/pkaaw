@@ -32,7 +32,7 @@ def console_auth(request_data):
     authorize_url = authorize_url + request_data.get('resource_owner_key')
     webbrowser.open(authorize_url, new=0, autoraise=True)
 
-    redirect_response = input('Paste the full redirect URL here: ')
+    # redirect_response = input('Paste the full redirect URL here: ')
 
     return request_data
 
