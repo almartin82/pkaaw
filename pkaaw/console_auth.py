@@ -12,7 +12,8 @@ class ConsoleAuth(object):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.khan_auth = pkaaw.auth_flow.get_request_tokens(
-            self.consumer_key, self.consumer_secret)
+            self.consumer_key, self.consumer_secret
+        )
         self.khan_auth = pkaaw.auth_flow.console_auth(self.khan_auth)
         self.tokens = pkaaw.auth_flow.fetch_access_token(self.khan_auth)
         self.access_token = self.tokens['access_token']
