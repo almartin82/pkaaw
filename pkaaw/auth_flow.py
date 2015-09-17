@@ -32,8 +32,14 @@ def console_auth(request_data):
     authorize_url = authorize_url + request_data.get('resource_owner_key')
     webbrowser.open(authorize_url, new=0, autoraise=True)
 
-    # redirect_response = input('Paste the full redirect URL here: ')
+    redirect_response = input('Paste the full redirect URL here: ')
+    redirect_response = redirect_response.split('?')[1]
 
+    credentials = urlparse.parse_qs(redirect_response)
+    request_data['request_owner_key'] = credentials.get('oauth_token')[0]
+    request_data['request_owner_secret'] = credentials.get(
+            'oauth_token_secret'
+        )[0]
     return request_data
 
 
