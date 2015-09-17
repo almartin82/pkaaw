@@ -34,4 +34,7 @@ class ConsoleAuth(object):
 
     def make_request(self, target_url):
         """makes an authenticated request to the target url"""
-        requests.get(url=target_url, auth=self.oauth).json()
+        r = requests.get(url=target_url, auth=self.oauth)
+        r.raise_for_status()
+
+        return r.json()

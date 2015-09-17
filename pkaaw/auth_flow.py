@@ -40,7 +40,7 @@ def fetch_access_token(khan_auth):
 
     r = requests.post(
         url=pkaaw.constants.ACCESS_TOKEN_URL,
-        auth=oauth,
+        auth=oauth
     )
 
     credentials = urlparse.parse_qs(r.content)
