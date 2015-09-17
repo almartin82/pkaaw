@@ -11,36 +11,44 @@ import pkaaw.constants
 
 def get_request_tokens(consumer_key, consumer_secret):
     """uses request_oauthlib to start the oauth dance."""
-    khan_auth = requests_oauthlib.OAuth1Session(client_key=consumer_key,
-                                                client_secret=consumer_secret)
-    khan_auth.fetch_request_token(pkaaw.constants.REQUEST_TOKEN_URL)
-    return khan_auth
+    khan_auth = requests_oauthlib.OAuth1(
+        client_key=consumer_key,
+        client_secret=consumer_secret
+    )
+    r = requests.post(url=pkaaw.constants.REQUEST_TOKEN_URL, auth=khan_auth)
+    credentials = urlparse.parse_qs(r.content)
+    request_data = {
+        'consumer_key': consumer_key,
+        'consumer_secret': consumer_secret,
+        'resource_owner_key': credentials.get('oauth_token')[0],
+        'resource_owner_secret': credentials.get('oauth_token_secret')[0]
+    }
+    return request_data
 
 
-def console_auth(khan_auth):
+def console_auth(request_data):
     """for capturing auth credentials in the python console"""
-    url = khan_auth.authorization_url(pkaaw.constants.AUTHORIZATION_URL)
-    webbrowser.open(url, new=0, autoraise=True)
+    authorize_url = pkaaw.constants.AUTHORIZATION_URL + '?oauth_token='
+    authorize_url = authorize_url + request_data.get('resource_owner_key')
+    webbrowser.open(authorize_url, new=0, autoraise=True)
 
     redirect_response = input('Paste the full redirect URL here: ')
 
-    khan_auth.parse_authorization_response(redirect_response)
-    return khan_auth
+    return request_data
 
 
-def fetch_access_token(khan_auth):
+def fetch_access_token(request_data):
     """takes request token and exchanges for access token"""
-    keys = khan_auth.auth.client
     oauth = requests_oauthlib.OAuth1(
-        client_key=keys.client_key,
-        client_secret=keys.client_secret,
-        resource_owner_key=keys.resource_owner_key,
-        resource_owner_secret=keys.resource_owner_secret
+        client_key=request_data.get('consumer_key'),
+        client_secret=request_data.get('consumer_secret'),
+        resource_owner_key=request_data.get('resource_owner_key'),
+        resource_owner_secret=request_data.get('resource_owner_secret')
     )
 
     r = requests.post(
         url=pkaaw.constants.ACCESS_TOKEN_URL,
-        auth=oauth,
+        auth=oauth
     )
 
     credentials = urlparse.parse_qs(r.content)
