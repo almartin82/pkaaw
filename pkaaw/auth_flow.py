@@ -38,8 +38,8 @@ def console_auth(request_data):
     credentials = urlparse.parse_qs(redirect_response)
     request_data['request_owner_key'] = credentials.get('oauth_token')[0]
     request_data['request_owner_secret'] = credentials.get(
-            'oauth_token_secret'
-        )[0]
+                                                           'oauth_token_secret'
+                                                           )[0]
     return request_data
 
 
