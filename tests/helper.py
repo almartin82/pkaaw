@@ -21,5 +21,5 @@ class CoachTest(unittest.TestCase):
     def configure(self):
         self.consumer_key = 'CzQhjzHT3a5p5sAM'
         self.consumer_secret = 'Tbhk683HDPYDM9ea'
-        self.oauth_token = 't5724356125786112'
-        self.oauth_token_secret = 'TWTJU4whu9L2ycc3'
+        self.oauth_token = 't5250014963171328'
+        self.oauth_token_secret = 'MfBn8PsLtztVTEd6'

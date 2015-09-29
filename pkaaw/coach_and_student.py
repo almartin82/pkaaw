@@ -159,12 +159,6 @@ class Student(object):
             }
             stu_list.append(int_dict)
 
-        stu_list = [
-            stu_dict
-            for stu_dict in stu_list
-            if stu_dict['exercise'] in self.exers
-        ]
-
         return stu_list
 
     def get_exercise_states_raw(self):
@@ -188,11 +182,5 @@ class Student(object):
                 'mastery_flag': change_dict['to_progress']['mastered']
             }
             stu_list.append(int_dict)
-
-        stu_list = [
-            item_dict
-            for item_dict in stu_list
-            if item_dict['exercise'] in self.exers
-        ]
 
         return stu_list
