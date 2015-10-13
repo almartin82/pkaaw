@@ -78,7 +78,8 @@ class Student(object):
             if x.endswith(email_domain)
         ]
 
-        inner_dict['identity_email'] = ', '.join(map(str, identity_email))
+        # inner_dict['identity_email'] = ', '.join(map(str, identity_email))
+        inner_dict['identity_email'] = identity_email[0].split(':')[1]
 
         return inner_dict
 
