@@ -122,7 +122,7 @@ class Student(object):
                 # append to student dict
                 stu_list.append(int_dict)
 
-        return stu_list
+        return stu_list, stu_list_detail
 
     def get_composite_exercises_raw(self):
         stu_exercise_url = '%s?%s' % (pkaaw.constants.USER_EXERCISES_URL,
