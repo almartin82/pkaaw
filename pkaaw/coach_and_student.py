@@ -81,7 +81,7 @@ class Student(object):
         # inner_dict['identity_email'] = ', '.join(map(str, identity_email))
         inner_dict['identity_email'] = identity_email[0].split(':')[1]
 
-        for key, value in inner_dict.values():
+        for key, value in inner_dict.items():
             if inner_dict[key] == 'None':
                 inner_dict[key] = ''
 
