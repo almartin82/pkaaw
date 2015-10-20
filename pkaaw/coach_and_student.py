@@ -81,6 +81,10 @@ class Student(object):
         # inner_dict['identity_email'] = ', '.join(map(str, identity_email))
         inner_dict['identity_email'] = identity_email[0].split(':')[1]
 
+        for key, value in inner_dict.values():
+            if inner_dict[key] == 'None':
+                inner_dict[key] = ''
+
         return inner_dict
 
     def get_student_badges_raw(self):
