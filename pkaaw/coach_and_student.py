@@ -83,7 +83,7 @@ class Student(object):
 
         for key, value in inner_dict.items():
             if inner_dict[key] == 'None':
-                del inner_dict[key]
+                inner_dict[key] = None
 
         return inner_dict
 
